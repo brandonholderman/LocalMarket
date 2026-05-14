@@ -1,0 +1,10 @@
+☐ Set up your Postgres database
+☐ Design your database schema
+☐ Connect Express to Postgres
+☐ Set up Socket.IO alongside Express
+☐ Build authentication (sessions + JWT)
+☐ Build the listings features
+☐ Build the messaging system with Socket.IO
+☐ Manage socket connections and rooms
+☐ Handle persistence — storing messages in Postgres
+☐ Polish, error handling, and deployment

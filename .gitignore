@@ -66,6 +66,7 @@ web_modules/
 .yarn-integrity
 
 # dotenv environment variable files
+.ENV
 .env
 .env.*
 !.env.example
@@ -141,3 +142,6 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# TODO
+.todo
