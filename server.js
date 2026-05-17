@@ -1,27 +1,25 @@
-// const dotenv = require('dotenv')
-// dotenv.config()
-// const pg = require('pg')
-// const pgp = require('pg-promise')
-// const express = require('express')
-
-// import dotenv from 'dotenv'
-// dotenv.config({ path: '.env' })
-
 
 // import http from 'http'
-import pool, { connectDB, withTransaction } from './src/config/db.js'
+// import { withTransaction } from './src/config/db.js'
+import pool, { connectDB } from './src/config/db.js'
 import express from 'express'
+import 'dotenv-expand/config'
+
 const port = process.env.PORT
-
 const app = express()
-
-app.get('/marketplace', async (req, res) => {
-    const result = await pool.query('SELECT * FROM listings')
-    res.send(result ?? null)
-})
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
+})
+
+app.get('/marketplace', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM listings')
+        res.json(result.rows)
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({ error: 'Database Error' })
+    }
 })
 
 async function start() {
@@ -31,7 +29,10 @@ async function start() {
     })    
 }
 
-start()
+start().catch(err => {
+    console.error('Startup failed: ', err)
+    process.exit(1)
+})
 
 // dbConnction.one('SELECT $1 AS value', 123)
 //     .then((data) => {

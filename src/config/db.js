@@ -1,41 +1,21 @@
-// const pg = require('pg')
-// const pgp = require('pg-promise')
-// const dotenv = require('dotenv')
-// import pgp from 'pg-promise'
-
-// const db = pgp(process.env.DB_NAME)
-// const dbHost = pgp(process.env.DB_HOST)
-// const dbUser = pgp(process.env.DB_USER)
-// const dbConnction = pgp(process.env.DB_URL)
-// const dbPoolMax = pgp(process.env.DB_POOL_MAX)
-// const dbIdleTimeout = pgp(process.env.DB_IDLE_TIMEOUT)
-// const dbConnectionTimeout = pgp(process.env.DB_CONNECTION_TIMEOUT)
-
-
 import { Pool } from 'pg'
 import dotenv from 'dotenv'
-dotenv.config({ path: '.env' })
+import dotenvExpand from 'dotenv-expand'
 
-const port = process.env.PORT
-const db = process.env.DB_NAME
-const dbHost = process.env.DB_HOST
-const dbUser = process.env.DB_USER
-const datO = process.env.DAT_ONE
-// const dbConnection = process.env.DB_URL
-const dbConnection = `postgres://${dbUser}:${datO}@${dbHost}:${port}/${db}`
+const env = dotenv.config()
+dotenvExpand.expand(env)
 
+const dbConnection = process.env.DB_URL
 const dbPoolMax = process.env.DB_POOL_MAX
 const dbIdleTimeout = process.env.DB_IDLE_TIMEOUT
 const dbConnectionTimeout = process.env.DB_CONNECTION_TIMEOUT
 
 
 const pool = new Pool({
-    host: dbHost,
-    user: dbUser,
     connectionString: dbConnection,
-    max: dbPoolMax,
-    idleTimeoutMillis: dbIdleTimeout,
-    connectionTimeoutMillis: dbConnectionTimeout,
+    max: dbPoolMax ?? 10,
+    idleTimeoutMillis: dbIdleTimeout ?? 30000,
+    connectionTimeoutMillis: dbConnectionTimeout ?? 2000,
     maxLifetimeSeconds: 60,
     // ssl: process.env.NODE_ENV === 'production'
     //     ? { rejectUnauthorized: false }
@@ -44,16 +24,16 @@ const pool = new Pool({
 })
 
 pool.on('error', (err, client) => {
-    console.error(`${db} Unexpected error on idle client:`, err.message)
+    console.error('Unexpected error on idle client: ', err.message)
 })
 
 export async function connectDB() {
     //DB connection check
     try {
         const result = await pool.query('SELECT NOW() AS now')
-        console.log(`${dbHost} Connected to Postgres — server time: ${result.rows[0].now}`)
+        console.log('Connected to Postgres — server time: ', result.rows[0].now)
     } catch (err) {
-        console.error(`${dbHost} Failed to connect to Postgres:`, err.message)
+        console.error('Failed to connect to Postgres: ', err)
         process.exit(1)
     }
 }
@@ -73,7 +53,6 @@ export async function withTransaction(callback) {
         client.release() // Releases the client and closes connection to prevent server leaks. 
     }
 }
-
 
 // Allows file to be exported and used. 
 export default pool;
