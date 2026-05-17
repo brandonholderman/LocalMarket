@@ -1,12 +1,16 @@
-
-// import http from 'http'
 // import { withTransaction } from './src/config/db.js'
 import pool, { connectDB } from './src/config/db.js'
+import { initSocket } from './src/config/socket.js'
+import { Server } from 'socket.io'
+import http from 'http'
 import express from 'express'
 import 'dotenv-expand/config'
 
-const port = process.env.PORT
+const port = process.env.SERVER_PORT
 const app = express()
+const server = http.createServer(app)
+const io = new Server(server) 
+
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
@@ -22,10 +26,12 @@ app.get('/marketplace', async (req, res) => {
     }
 })
 
+initSocket(server)
+
 async function start() {
     await connectDB()
-    app.listen(port, () => {
-        console.log(`Example app listening on port ${port}`)
+    server.listen(port, () => {
+        console.log(`Listening on port ${port}`)
     })    
 }
 
