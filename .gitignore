@@ -144,6 +144,8 @@ vite.config.ts.timestamp-*
 .vite/
 
 # TODO
+TODO
+.TODO
 .todo
 TODO.todo
 
