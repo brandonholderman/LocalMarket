@@ -48,7 +48,6 @@ start().catch(err => {
 //         console.log('ERROR:', error)
 //     })
 
-
 // const pool = new Pool({
 //     onConnect: async (client) => {
 //         await client.query('SET search_path TO my_schema')
