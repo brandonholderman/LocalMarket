@@ -70,17 +70,19 @@ export function registerMessageHandlers(io, socket) {
             const recipientID = convo.buyer_id === userID ? convo.seller_id : convo.buyer_id
             const recipientSocketIDs = getSocketIDs(recipientID)
 
-            // for (let socketID of recipientSocketIDs) {
-            //     const recipientSocket = io.sockets.sockets.get(socketID) // ??????????
-            //     if (recipientSocket && )
-            // }
-
             acknowledge?.({ success: true, message: newMessage })
 
         } catch (err) {
             console.error('[socket] send_messsage error: ', err)
             acknowledge?.({ success: false, error: 'Message failed to send'})
         }
+    })
+
+    socket.on('typing', ({ conversationID, isTyping}) => {
+        socket.to(conversationID).emit('user_typing', {
+            userID,
+            isTyping
+        })
     })
 
     socket.on('disconnect', () => {

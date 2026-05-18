@@ -1,5 +1,5 @@
 // import { withTransaction } from './src/config/db.js'
-import pool, { connectDB } from './src/config/db.js'
+import pool, { connectDB, withTransaction } from './src/config/db.js'
 import { initSocket } from './src/config/socket.js'
 import { Server } from 'socket.io'
 import http from 'http'
@@ -13,7 +13,7 @@ const io = new Server(server)
 
 
 app.get('/', (req, res) => {
-    res.send('Hello World!')
+    res.send('<h1>Local Market</h1>')
 })
 
 app.get('/marketplace', async (req, res) => {
