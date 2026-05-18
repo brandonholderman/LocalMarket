@@ -151,4 +151,7 @@ TODO.todo
 
 draft.js
 
-C:\Users\FifthFlow\Projects\LocalMarket\notes
+notes/
+
+.gitignore
+.gitattributes
