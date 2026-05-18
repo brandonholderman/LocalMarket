@@ -2,6 +2,7 @@
 import pool, { connectDB, withTransaction } from './src/config/db.js'
 import { initSocket } from './src/config/socket.js'
 import { Server } from 'socket.io'
+import cookieParser from 'cookie-parser'
 import http from 'http'
 import express from 'express'
 import 'dotenv-expand/config'
@@ -11,9 +12,14 @@ const app = express()
 const server = http.createServer(app)
 const io = new Server(server) 
 
+app.use(cookieParser())
 
 app.get('/', (req, res) => {
     res.send('<h1>Local Market</h1>')
+})
+
+app.get('/login', (req, res) => {
+    res.send('<h1>Login</h1>')
 })
 
 app.get('/marketplace', async (req, res) => {
