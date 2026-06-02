@@ -18,7 +18,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "db:setup-test": "node tests/setup-test-db.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "start": "node server.js"
   },
   "repository": {

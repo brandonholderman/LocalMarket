@@ -12,7 +12,7 @@ function signToken(user) {
             email: user.email,
             displayName: user.display_name,
         },
-        process.env.JWT_SECRET, // <--- Am I creating this value to store or is it generated each time? Will this need to be changed in the future to for actual use?
+        process.env.JWT_SECRET, 
         { expiresIn: JWT_EXPIRY }
     )
 }
